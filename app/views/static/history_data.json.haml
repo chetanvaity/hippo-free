@@ -1,0 +1,11 @@
+{
+"type": "LineChart",
+"cols": [["datetime", "Scan Time"], ["number", "Location of #{@item_name}"]],
+"rows": [
+- @item_history.each_with_index do |item, index|
+  - if index == 0
+    ["#{item['time']}", #{item['curr_loc']}]
+  - else
+    , ["#{item['time']}", #{item['curr_loc']}]
+]
+}

@@ -1,0 +1,43 @@
+- divid = "LocMap#{widget.id}"
+%div{:id => "#{divid}", :style => "height:250px"}
+
+%script{:type => "text/javascript", :src => "http://www.openlayers.org/api/OpenLayers.js"}
+   
+%script
+  var ns_#{widget.id} = {
+  foo: function() {
+
+  var count = 0;
+  var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+  var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+  
+  map = new OpenLayers.Map("#{divid}");
+  var mapnik         = new OpenLayers.Layer.OSM();
+  map.addLayer(mapnik);
+  
+  var markerlayer = new OpenLayers.Layer.Markers("Markers_#{divid}" );
+  map.addLayer(markerlayer);
+ 
+  function getMarkers() {
+  count = count + 1;
+  $.getJSON("/location_map_ajax.json?channels=#{widget.data}", function(data) {
+  markerlayer.clearMarkers();
+  for (var i=0; i<data.markers.length; i++) {
+  position = new OpenLayers.LonLat(data.markers[i]["longitude"], data.markers[i]["latitude"]).transform(fromProjection, toProjection);
+  m = new OpenLayers.Marker(position);
+  markerlayer.addMarker(m);
+  }
+  centerposition = new OpenLayers.LonLat(data.centerposition["longitude"], data.centerposition["latitude"]).transform(fromProjection, toProjection);
+  map.setCenter(centerposition, data.zoom);
+  markerlayer.redraw();
+  }); // end function(data)
+  };
+
+  getMarkers();
+  setInterval("getMarkers()", 30000);
+  
+  } // end foo()
+  } // end ns
+
+  ns_#{widget.id}.foo();
+  

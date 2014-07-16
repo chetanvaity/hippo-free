@@ -1,0 +1,46 @@
+%h3 Inventory Demo
+%p Operation Theaters equipment monitor: Ten equipments - each with a home operation theater - are shared between three operation theaters
+
+%div.row
+  %div.span3
+    %h4 OT1
+    %div.well
+      - @loc1_items.each do |item|
+        %div.well{:class => ("alert alert-error" unless item["at_home"])}
+          %div
+            %small
+              = "Item ID: " + item["id"] + ", Home: OT" + item["home_loc"]
+          %div
+            %a{:href => "/demo2/" + item["id"]}
+              = item["name"]
+          %div.muted
+            = item["created_at"]
+
+  %div.span3
+    %h4 OT2
+    %div.well
+      - @loc2_items.each do |item|
+        %div.well{:class => ("alert alert-error" unless item["at_home"])}
+          %div
+            %small
+              = "Item ID: " + item["id"] + ", Home: OT" + item["home_loc"]
+          %div
+            %a{:href => "/demo2/" + item["id"]}
+              = item["name"]
+          %div.muted
+            = item["created_at"]
+
+  %div.span3
+    %h4 OT3
+    %div.well
+      - @loc3_items.each do |item|
+        %div.well{:class => ("alert alert-error" unless item["at_home"])}
+          %div
+            %small
+              = "Item ID: " + item["id"] + ", Home: OT" + item["home_loc"]
+          %div
+            %a{:href => "/demo2/" + item["id"]}
+              = item["name"]
+          %div.muted
+            = item["created_at"]
+

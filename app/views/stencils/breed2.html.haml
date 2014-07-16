@@ -1,0 +1,14 @@
+%div.row
+  %div
+    - if @widgets[0].breed == 1
+      = render :partial => "widgets/location_map", :locals => {:widget => @widgets[0]}
+    - if @widgets[0].breed == 2
+      = render :partial => "widgets/table", :locals => {:widget => @widgets[0]}
+  %br
+  %hr
+  %br  
+  %div
+    - if @widgets[1].breed == 1
+      = render :partial => "widgets/location_map", :locals => {:widget => @widgets[1]}
+    - if @widgets[1].breed == 2
+      = render :partial => "widgets/table", :locals => {:widget => @widgets[1]}

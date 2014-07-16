@@ -1,0 +1,21 @@
+%h1 Listing stencils
+
+%table
+  %tr
+    %th Breed
+    %th Widgets
+    %th
+    %th
+    %th
+
+  - @stencils.each do |stencil|
+    %tr
+      %td= stencil.breed
+      %td= stencil.widgets
+      %td= link_to 'Show', stencil
+      %td= link_to 'Edit', edit_stencil_path(stencil)
+      %td= link_to 'Destroy', stencil, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Stencil', new_stencil_path

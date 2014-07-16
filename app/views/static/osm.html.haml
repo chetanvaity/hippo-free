@@ -1,0 +1,39 @@
+%div#Map{:style => "height:250px"}
+
+%script{:type => "text/javascript", :src => "http://www.openlayers.org/api/OpenLayers.js"}
+   
+%script
+  var count = 0;
+  var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+  var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+  
+  map = new OpenLayers.Map("Map");
+  var mapnik         = new OpenLayers.Layer.OSM();
+  map.addLayer(mapnik);
+  
+  var markerlayer = new OpenLayers.Layer.Markers( "Markers" );
+  map.addLayer(markerlayer);
+  
+  - @markers.each do |m|
+    position = new OpenLayers.LonLat(#{m["longitude"]}, #{m["latitude"]}).transform(fromProjection, toProjection);
+    markerlayer.addMarker(new OpenLayers.Marker(position));
+ 
+  centerposition = new OpenLayers.LonLat(#{@centerposition["longitude"]}, #{@centerposition["latitude"]}).transform(fromProjection, toProjection);
+  map.setCenter(centerposition, #{@zoom});
+
+  function getMarkers() {
+  count = count + 1;
+  $.getJSON("/osm.json", function(data) {
+  markerlayer.clearMarkers();
+  for (var i=0; i<data.markers.length; i++) {
+  position = new OpenLayers.LonLat(data.markers[i]["longitude"], data.markers[i]["latitude"]).transform(fromProjection, toProjection);
+  m = new OpenLayers.Marker(position);
+  markerlayer.addMarker(m);
+  }
+  markerlayer.redraw();
+  });
+  };
+
+  getMarkers();
+  setInterval("getMarkers()", 10000);
+  

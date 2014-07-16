@@ -1,0 +1,29 @@
+- divid = "Table#{widget.id}"
+%div{:id => "#{divid}"}
+
+%script
+  var ns_#{widget.id} = {
+  foo: function() {
+
+  function cell(ih){
+  var tcell =document.createElement('td');
+  tcell.innerHTML=ih;
+  return tcell;
+  };
+  
+  $.getJSON("/table_ajax.json?channels=#{widget.data}", function(data) {
+  mutable=document.createElement('table');
+  mutable.className = "table table-striped";
+  for (var i=0; i<data.markers.length; i++){
+  row1=document.createElement('tr');
+  row1.appendChild(cell(data.markers[i]["entry_id"]));
+  row1.appendChild(cell(data.markers[i]["latitude"]));
+  row1.appendChild(cell(data.markers[i]["longitude"]));
+  mutable.appendChild(row1);
+  }; // end for
+  document.getElementById("#{divid}").appendChild(mutable);
+  }); // end function(data)
+  } // end foo()
+  } // end ns
+
+  ns_#{widget.id}.foo();

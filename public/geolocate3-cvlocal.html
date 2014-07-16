@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type='text/javascript'>
+ //onclick="getLocation()">Try It</button>
+var count = 0;
+var llat, llong;
+
+function locate() {
+	count++;
+	x.innerHTML="";
+	getLocation();
+	setTimeout(txLocation, 10000); //set a delay for populating the geolocation values
+	//txLocation();
+}
+
+//put location 
+function txLocation(){
+        var xmlhttp; 
+
+        //Transmitting only long for now. 
+        //Using hippo tempsensor demo to piggyback this application
+        var locurl = "http://192.168.10.106:3000/update?key=60XJCIEIUGRNATEP&lat=" + llat + "&long=" + llong;
+
+        xmlhttp=new XMLHttpRequest(); 
+        xmlhttp.open("GET", locurl, true) 
+        xmlhttp.send(null); 
+} 
+
+function getLocation()
+  {
+  if (navigator.geolocation)
+    {
+    navigator.geolocation.getCurrentPosition(showPosition,showError);
+    }
+  else{x.innerHTML="Geolocation is not supported by this browser.";}
+  }
+function showPosition(position)
+  {
+  llat =	position.coords.latitude;
+  llong = position.coords.longitude;
+  x.innerHTML=count + "<br>Latitude: " + llat + 
+  "<br>Longitude: " + llong;	
+  }
+function showError(error)
+  {
+  switch(error.code) 
+    {
+    case error.PERMISSION_DENIED:
+      x.innerHTML="User denied the request for Geolocation."
+      break;
+    case error.POSITION_UNAVAILABLE:
+      x.innerHTML="Location information is unavailable."
+      break;
+    case error.TIMEOUT:
+      x.innerHTML="The request to get user location timed out."
+      break;
+    case error.UNKNOWN_ERROR:
+      x.innerHTML="An unknown error occurred."
+      break;
+    }
+  }
+</script>
+
+</head>
+
+<body>
+<div id="demo">Test </div>
+<script>
+var x=document.getElementById("demo");
+locate();
+setInterval("locate()", 60000);
+
+</script>
+</body>
+</html>
+
+

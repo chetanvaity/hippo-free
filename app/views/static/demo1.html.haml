@@ -1,0 +1,51 @@
+%h3 Sensor Demo
+%p Vaccine storage facility monitor: Four sensors deployed in a vaccine cold room constantly monitor and output temperature.
+
+%div.tabbable
+  %ul.nav.nav-tabs
+    %li.active
+      %a{:href => "#tab1", :"data-toggle" => "tab"} Raw data
+    %li
+      %a{:href => "#tab2", :"data-toggle" => "tab"} Charts
+    %li
+      %a{:href => "#tab3", :"data-toggle" => "tab"} Gauges
+
+  %div.tab-content
+    %div#tab1.tab-pane.active
+      %table.table.table-hover.table-condensed
+        %thead
+          %tr
+            %th Time
+            %th Sensor ID
+            %th Temperature (Celsius)
+        %tbody
+          - @feed_entries.each do |entry|
+            - if entry["field1"] < -45 or entry["field1"] > -10
+              %tr.error
+                %td #{entry["created_at"]}
+                %td #{entry["field2"]}
+                %td #{entry["field1"]}
+            - else              
+              %tr
+                %td #{entry["created_at"]}
+                %td #{entry["field2"]}
+                %td #{entry["field1"]}
+
+    %div#tab2.tab-pane
+      %iframe{:width => "450", :height => "250", :style => "border: 1px solid #cccccc;", :src => "http://50.116.23.141:3000/channels/4/charts/1?timescale=100"}
+      %iframe{:width => "450", :height => "250", :style => "border: 1px solid #cccccc;", :src => "http://50.116.23.141:3000/channels/5/charts/1?timescale=100"}
+      %iframe{:width => "450", :height => "250", :style => "border: 1px solid #cccccc;", :src => "http://50.116.23.141:3000/channels/6/charts/1?timescale=100"}
+      %iframe{:width => "450", :height => "250", :style => "border: 1px solid #cccccc;", :src => "http://50.116.23.141:3000/channels/7/charts/1?timescale=100"}
+
+    %div#tab3.tab-pane
+      %div.row.span10
+        %div.span4.well
+          = chart_tag('demo1_curr_temp', 300, :id => 4)
+        %div.span4.well
+          = chart_tag('demo1_curr_temp', 300, :id => 5)
+      %div.row.span10
+        %div.span4.well
+          = chart_tag('demo1_curr_temp', 300, :id => 6)
+        %div.span4.well
+          = chart_tag('demo1_curr_temp', 300, :id => 7)
+        

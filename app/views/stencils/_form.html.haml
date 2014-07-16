@@ -1,0 +1,16 @@
+= form_for @stencil do |f|
+  - if @stencil.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@stencil.errors.count, "error")} prohibited this stencil from being saved:"
+      %ul
+        - @stencil.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :breed
+    = f.number_field :breed
+  .field
+    = f.label :widgets
+    = f.text_field :widgets
+  .actions
+    = f.submit 'Save'

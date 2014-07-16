@@ -1,0 +1,6 @@
+%div.well
+  %div#widget1container
+    - if @widgets[0].breed == 1
+      = render :partial => "widgets/location_map", :locals => {:widget => @widgets[0]}
+    - if @widgets[0].breed == 2
+      = render :partial => "widgets/table", :locals => {:widget => @widgets[0]}

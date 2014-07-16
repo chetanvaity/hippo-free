@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Breed:
+  = @stencil.breed
+%p
+  %b Widgets:
+  = @stencil.widgets
+
+= link_to 'Edit', edit_stencil_path(@stencil)
+\|
+= link_to 'Back', stencils_path
